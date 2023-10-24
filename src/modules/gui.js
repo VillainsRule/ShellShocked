@@ -1,5 +1,4 @@
 import settings from '../utils/settings.js';
-import makeDraggable from '../utils/makeDraggable.js';
 
 export const guiID = btoa(Math.random().toString(32));
 
