@@ -1,0 +1,20 @@
+// ==UserScript==
+// @name         ShellShocked
+// @description  an undetectable cheat for shell shockers.
+// @version      1.0.0a
+// @icon         https://i.imgur.com/t57csO9.png
+
+// @author       VillainsRule
+// @namespace    https://github.com/VillainsRule/ShellShocked
+
+// @match        *://*.shellshock.io/*
+// @match        *://*.math.international/*
+
+// @grant none
+// @run-at document-start
+
+// ==/UserScript==
+
+(() => {
+    {{code}}
+})();

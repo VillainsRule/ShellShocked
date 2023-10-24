@@ -1,0 +1,16 @@
+{
+    "name": "shellshocked",
+    "description": "the most advanced hack for shell shockers.",
+    "main": "src/main.js",
+    "type": "module",
+    "author": "@xthonk",
+    "scripts": {
+        "build": "webpack && node userscript/build.js"
+    },
+    "dependencies": {
+        "webpack": "^5.89.0"
+    },
+    "devDependencies": {
+        "webpack-cli": "^5.1.4"
+    }
+}
