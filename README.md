@@ -2,6 +2,7 @@
     <img src="https://i.imgur.com/uGszEV2.png" height="300">
     <h1>ShellShocked</h1>
     <h3>the most advanced hack for shell shockers.</h3>
+    <h5>if you find a bug, <a href="https://github.com/VillainsRule/ShellShocked/issues">open an issue</a> and i'll do my best.</h5>
 </div>
 
 <h2 align="center">Features</h2>
