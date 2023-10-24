@@ -11,8 +11,8 @@
     - Right Mouse/Always toggle
 - ESP
     - ESP: Eggs through Walls
-    - ESP lines: hitbox lines
-    - Hitboxes: classic ESP with hitboxes around players
+    - ESP boxes: boxes around eggs
+    - ESP lines: lines from the player pointing to all eggs.
 - Advanced GUI
     - A clean GUI that's easy to use.
 - Keybinds
@@ -25,6 +25,9 @@
 2. It's fully open source.
 3. It has a very clean GUI.
 4. It doesn't have stupid 5 minute ads (ahem zertalious).
+
+<h2 align="center">Known Bugs</h2>
+- ESP lines are broken and do not root from the players position.
 
 <h2 align="center">Usage - Basic</h2>
 

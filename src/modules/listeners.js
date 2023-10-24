@@ -32,9 +32,9 @@ export const initListeners = () => window.addEventListener('keyup', function(eve
             settings.get().espLines.enabled = !settings.get().espLines.enabled;
             document.getElementById(checkIDs.esplines).checked = settings.get().espLines.enabled;
             break;
-        case settings.get().hitboxes.key:
-            settings.get().hitboxes.enabled = !settings.get().hitboxes.enabled;
-            document.getElementById(checkIDs.hitboxes).checked = settings.get().hitboxes.enabled;
+        case settings.get().espBoxes.key:
+            settings.get().espBoxes.enabled = !settings.get().espBoxes.enabled;
+            document.getElementById(checkIDs.espboxes).checked = settings.get().espBoxes.enabled;
             break;
     };
 });

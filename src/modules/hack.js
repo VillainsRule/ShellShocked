@@ -58,8 +58,8 @@ export async function initHack() {
             player.lines.playerExists = true;
             player.lines = BABYLON.MeshBuilder.CreateLines('lines', player.lineOptions);
     
-            player.sphere.renderingGroupId = settings.get().hitboxes.enabled ? 1 : 0;
-            player.sphere.visibility = (settings.get().aimbot.enabled || settings.get().hitboxes.enabled) && myPlayer !== player && (myPlayer.team === 0 || myPlayer.team !== player.team);
+            player.sphere.renderingGroupId = settings.get().espBoxes.enabled ? 1 : 0;
+            player.sphere.visibility = (settings.get().aimbot.enabled || settings.get().espBoxes.enabled) && myPlayer !== player && (myPlayer.team === 0 || myPlayer.team !== player.team);
     
             player.lines.visibility = player.playing && player.sphere.visibility && settings.get().espLines.enabled;
         };

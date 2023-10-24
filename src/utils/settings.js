@@ -22,7 +22,7 @@ class Settings {
                 enabled: true,
                 key: 'n'
             },
-            hitboxes: {
+            espBoxes: {
                 enabled: true,
                 key: 'm'
             },

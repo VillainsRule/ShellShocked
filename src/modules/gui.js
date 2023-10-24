@@ -7,7 +7,7 @@ export const checkIDs = {
     rightmouse: btoa(Math.random().toString(32)),
     esp: btoa(Math.random().toString(32)),
     esplines: btoa(Math.random().toString(32)),
-    hitboxes: btoa(Math.random().toString(32))
+    espboxes: btoa(Math.random().toString(32))
 };
 
 export async function initGUI() {
@@ -18,7 +18,7 @@ export async function initGUI() {
         else if (item === 'rightmouse') values.aimbot.rightMouse.enabled = !values.aimbot.rightMouse.enabled;
         else if (item === 'esp') values.esp.enabled = !values.esp.enabled;
         else if (item === 'esplines') values.espLines.enabled = !values.espLines.enabled;
-        else if (item === 'hitboxes') values.hitboxes.enabled = !values.hitboxes.enabled;
+        else if (item === 'espboxes') values.espBoxes.enabled = !values.espBoxes.enabled;
         
         settings.set(values);
     };
@@ -68,6 +68,11 @@ export async function initGUI() {
         .ss_cheatName {
             font-size: 2.5vh;
             font-family: 'Sigmar One';
+        }
+
+        .ss_brokenCheat {
+            color: red;
+            cursor: pointer;
         }
 
         .switch {
@@ -160,10 +165,10 @@ export async function initGUI() {
                 </label>
             </div>
             <div class="ss_cheatRow">
-                <div class="ss_cheatName">Hitboxes</div>
-                <div class="ss_key">key: ${settings.get().hitboxes.key.toUpperCase()}</div>
+                <div class="ss_cheatName ss_brokenCheat" onclick="alert('ESP boxes is broken.');">ESP Boxes</div>
+                <div class="ss_key">key: ${settings.get().espBoxes.key.toUpperCase()}</div>
                 <label class="switch">
-                    <input type="checkbox" checked="${settings.get().hitboxes.enabled}" onchange="setVal('hitboxes');" id="${checkIDs.hitboxes}">
+                    <input type="checkbox" checked="${settings.get().espBoxes.enabled}" onchange="setVal('espboxes');" id="${checkIDs.espboxes}">
                     <span class="slider round"></span>
                 </label>
             </div>
