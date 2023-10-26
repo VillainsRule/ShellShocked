@@ -1,3 +1,5 @@
+import variables from '../utils/variables.js';
+
 class Settings {
     settings;
 
@@ -55,5 +57,5 @@ class Settings {
 };
 
 const settings = new Settings();
-window.st = settings;
+window[variables.get().settingsID] = settings;
 export default settings;

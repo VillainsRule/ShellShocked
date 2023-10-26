@@ -1,4 +1,4 @@
-export const onUpdateFuncName = btoa(Math.random().toString(32));
+import variables from '../utils/variables.js';
 
 export async function initHook() {
     window.XMLHttpRequest = class extends window.XMLHttpRequest {
@@ -28,9 +28,9 @@ export async function initHook() {
                 };
 
                 return code
-                    .replace(sceneVarName + '.render()', `window['${onUpdateFuncName}'](${babylonVarName},${playersVarName},${myPlayerVarName});${sceneVarName}.render()`)
+                    .replace(sceneVarName + '.render()', `window['${variables.get().onUpdate}'](${babylonVarName},${playersVarName},${myPlayerVarName});${sceneVarName}.render()`)
                     .replace(`function ${cullFuncName}`, `function ${cullFuncName}(){return true;}function someFunctionWhichWillNeverBeUsedNow`)
-                    .replace(/.prototype.setVisible=function\(\w\){/, `.prototype.setVisible=function(eee){this.getChildTransformNodes().forEach(child=>child.setRenderingGroupId&&child.setRenderingGroupId(window.st.get().esp.enabled?1:0));`);
+                    .replace(/.prototype.setVisible=function\(\w\){/, `.prototype.setVisible=function(eee){this.getChildTransformNodes().forEach(child=>child.setRenderingGroupId&&child.setRenderingGroupId(window['${variables.get().settingsID}'].get().esp.enabled?1:0));`);
             };
 
             return super.response;

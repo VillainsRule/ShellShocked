@@ -1,9 +1,9 @@
-import { onUpdateFuncName } from './hooker.js';
+import variables from '../utils/variables.js';
 import { rightMouseDown } from './listeners.js';
 import settings from '../utils/settings.js';
 
 export async function initHack() {
-    window[onUpdateFuncName] = function(BABYLON, players, myPlayer) {
+    window[variables.get().onUpdate] = function(BABYLON, players, myPlayer) {
         if (!myPlayer) return;
         let lineOrigin = new BABYLON.Vector3();
         let linesArray = [];

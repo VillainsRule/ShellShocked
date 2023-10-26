@@ -1,4 +1,4 @@
-import { guiID, checkIDs } from './gui.js';
+import variables from '../utils/variables.js';
 import settings from '../utils/settings.js';
 
 let mouseDown = false;
@@ -12,29 +12,34 @@ export const initListeners = () => window.addEventListener('keyup', function(eve
 
     switch (event.key.toLowerCase()) {
         case settings.get().menuKey:
-            document.getElementById(guiID).style.display === 'none' ?
-                document.getElementById(guiID).style.display = '' :
-                document.getElementById(guiID).style.display = 'none';
+            if (document.getElementById(variables.get().guiID)) document.getElementById(variables.get().guiID).style.display === 'none' ?
+                document.getElementById(variables.get().guiID).style.display = '' :
+                document.getElementById(variables.get().guiID).style.display = 'none';
             break;
         case settings.get().aimbot.key:
+            if (!document.getElementById(variables.get().aimbot)) return;
             settings.get().aimbot.enabled = !settings.get().aimbot.enabled;
-            document.getElementById(checkIDs.aimbot).checked = settings.get().aimbot.enabled;
+            document.getElementById(variables.get().aimbot).checked = settings.get().aimbot.enabled;
             break;
         case settings.get().aimbot.rightMouse.key:
+            if (!document.getElementById(variables.get().rightmouse)) return;
             settings.get().aimbot.rightMouse.enabled = !settings.get().aimbot.rightMouse.enabled;
-            document.getElementById(checkIDs.rightmouse).checked = settings.get().aimbot.rightMouse.enabled;
+            document.getElementById(variables.get().rightmouse).checked = settings.get().aimbot.rightMouse.enabled;
             break;
         case settings.get().esp.key:
+            if (!document.getElementById(variables.get().esp)) return;
             settings.get().esp.enabled = !settings.get().esp.enabled;
-            document.getElementById(checkIDs.esp).checked = settings.get().esp.enabled;
+            document.getElementById(variables.get().esp).checked = settings.get().esp.enabled;
             break;
         case settings.get().espLines.key:
+            if (!document.getElementById(variables.get().esplines)) return;
             settings.get().espLines.enabled = !settings.get().espLines.enabled;
-            document.getElementById(checkIDs.esplines).checked = settings.get().espLines.enabled;
+            document.getElementById(variables.get().esplines).checked = settings.get().espLines.enabled;
             break;
         case settings.get().espBoxes.key:
+            if (!document.getElementById(variables.get().espboxes)) return;
             settings.get().espBoxes.enabled = !settings.get().espBoxes.enabled;
-            document.getElementById(checkIDs.espboxes).checked = settings.get().espBoxes.enabled;
+            document.getElementById(variables.get().espboxes).checked = settings.get().espBoxes.enabled;
             break;
     };
 });

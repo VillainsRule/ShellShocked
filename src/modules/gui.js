@@ -1,14 +1,5 @@
+import variables from '../utils/variables.js';
 import settings from '../utils/settings.js';
-
-export const guiID = btoa(Math.random().toString(32));
-
-export const checkIDs = {
-    aimbot: btoa(Math.random().toString(32)),
-    rightmouse: btoa(Math.random().toString(32)),
-    esp: btoa(Math.random().toString(32)),
-    esplines: btoa(Math.random().toString(32)),
-    espboxes: btoa(Math.random().toString(32))
-};
 
 export async function initGUI() {
     window.setVal = (item) => {
@@ -127,7 +118,7 @@ export async function initGUI() {
 
     document.body.insertAdjacentHTML('beforeend', `
         <style>${stylesheet}</style>
-        <div class="ss_container" id="${guiID}">
+        <div class="ss_container" id="${variables.get().guiID}">
             <div class="ss_title">ShellShocked</div>
             <div class="ss_description">the most advanced hack for shell shockers.</div>
             <hr class="ss_divider" />
@@ -136,7 +127,7 @@ export async function initGUI() {
                 <div class="ss_cheatName">Aimbot</div>
                 <div class="ss_key">key: ${settings.get().aimbot.key.toUpperCase()}</div>
                 <label class="switch">
-                    <input type="checkbox" checked="${settings.get().aimbot.enabled}" onchange="setVal('aimbot');" id="${checkIDs.aimbot}">
+                    <input type="checkbox" checked="${settings.get().aimbot.enabled}" onchange="setVal('aimbot');" id="${variables.get().aimbot}">
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -144,7 +135,7 @@ export async function initGUI() {
                 <div class="ss_cheatName">Right Mouse Aimbot</div>
                 <div class="ss_key">key: ${settings.get().aimbot.rightMouse.key.toUpperCase()}</div>
                 <label class="switch">
-                    <input type="checkbox" checked="${settings.get().aimbot.rightMouse.enabled}" onchange="setVal('rightmouse');" id="${checkIDs.rightmouse}">
+                    <input type="checkbox" checked="${settings.get().aimbot.rightMouse.enabled}" onchange="setVal('rightmouse');" id="${variables.get().rightmouse}">
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -152,23 +143,23 @@ export async function initGUI() {
                 <div class="ss_cheatName">ESP</div>
                 <div class="ss_key">key: ${settings.get().esp.key.toUpperCase()}</div>
                 <label class="switch">
-                    <input type="checkbox" checked="${settings.get().esp.enabled}" onchange="setVal('esp');" id="${checkIDs.esp}">
+                    <input type="checkbox" checked="${settings.get().esp.enabled}" onchange="setVal('esp');" id="${variables.get().esp}">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="ss_cheatRow">
-                <div class="ss_cheatName">ESP Lines</div>
-                <div class="ss_key">key: ${settings.get().espLines.key.toUpperCase()}</div>
-                <label class="switch">
-                    <input type="checkbox" checked="${settings.get().espLines.enabled}" onchange="setVal('esplines');" id="${checkIDs.esplines}">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="ss_cheatRow">
-                <div class="ss_cheatName ss_brokenCheat" onclick="alert('ESP boxes is broken.');">ESP Boxes</div>
+                <div class="ss_cheatName">ESP Boxes</div>
                 <div class="ss_key">key: ${settings.get().espBoxes.key.toUpperCase()}</div>
                 <label class="switch">
-                    <input type="checkbox" checked="${settings.get().espBoxes.enabled}" onchange="setVal('espboxes');" id="${checkIDs.espboxes}">
+                    <input type="checkbox" checked="${settings.get().espBoxes.enabled}" onchange="setVal('espboxes');" id="${variables.get().espboxes}">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="ss_cheatRow">
+                <div class="ss_cheatName ss_brokenCheat" onclick="alert(\`ESP lines is broken. We're aware of the issue and working to fix it.\`);">ESP Lines</div>
+                <div class="ss_key">key: ${settings.get().espLines.key.toUpperCase()}</div>
+                <label class="switch">
+                    <input type="checkbox" checked="${settings.get().espLines.enabled}" onchange="setVal('esplines');" id="${variables.get().esplines}">
                     <span class="slider round"></span>
                 </label>
             </div>
