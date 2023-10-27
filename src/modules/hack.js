@@ -5,7 +5,11 @@ import settings from '../utils/settings.js';
 export async function initHack() {
     window[variables.get().onUpdate] = function(BABYLON, players, myPlayer) {
         if (!myPlayer) return;
-        let lineOrigin = new BABYLON.Vector3();
+
+        let lineOrigin;
+        if (!window[variables.get().lineOrigin]) window[variables.get().lineOrigin] = new BABYLON.Vector3();
+        lineOrigin = window[variables.get().lineOrigin];
+
         let linesArray = [];
     
         lineOrigin.copyFrom(myPlayer.actor.mesh.position);
@@ -40,7 +44,7 @@ export async function initHack() {
     
             if (player.lines === undefined) {
                 const options = {
-                    points: [lineOrigin, player.actor.mesh.position],
+                    points: [ lineOrigin, player.actor.mesh.position ],
                     updatable: true
                 };
     

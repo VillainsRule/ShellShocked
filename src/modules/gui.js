@@ -15,7 +15,7 @@ export async function initGUI() {
     };
 
     let stylesheet = `
-        .ss_container {
+        .ssd_container {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -30,39 +30,50 @@ export async function initGUI() {
             color: var(--ss-white);
         }
 
-        .ss_title {
+        .ssd_title {
             font-family: 'Sigmar One';
             font-size: 4vh;
         }
 
-        .ss_description {
+        .ssd_description {
             font-size: 2.6vh;
         }
 
-        .ss_divider {
+        .ssd_divider {
             width: calc(90%);
             margin: 2vh 5%;
         }
 
-        .ss_header {
+        .ssd_header {
             font-size: 2.9vh;
             font-family: 'Sigmar One';
         }
 
-        .ss_cheatRow {
+        .ssd_cheatRow {
             display: flex;
             justify-content: center;
             gap: 5vw;
             margin-top: 1.5vh;
         }
 
-        .ss_cheatName {
+        .ssd_cheatName {
             font-size: 2.5vh;
             font-family: 'Sigmar One';
         }
 
-        .ss_brokenCheat {
-            color: red;
+        .ssd_buttons {
+            display: flex;
+            justify-content: center;
+            gap: 5vw;
+        }
+
+        .ssd_button {
+            border: calc(var(--ss-common-border-width)/2) solid var(--ss-blue5);
+            box-shadow: var(--ss-box-shadow-1), var(--ss-btn-dark-bevel) rgb(8,110,141), var(--ss-btn-light-bevel) rgb(0,173,230);
+            border-radius: var(--border-radius);
+            padding: 6px 20px;
+            font-weight: 1000;
+            font-size: 2.25vh;
             cursor: pointer;
         }
 
@@ -118,50 +129,55 @@ export async function initGUI() {
 
     document.body.insertAdjacentHTML('beforeend', `
         <style>${stylesheet}</style>
-        <div class="ss_container" id="${variables.get().guiID}">
-            <div class="ss_title">ShellShocked</div>
-            <div class="ss_description">the most advanced hack for shell shockers.</div>
-            <hr class="ss_divider" />
-            <div class="ss_header">Cheats</div>
-            <div class="ss_cheatRow">
-                <div class="ss_cheatName">Aimbot</div>
-                <div class="ss_key">key: ${settings.get().aimbot.key.toUpperCase()}</div>
+        <div class="ssd_container" id="${variables.get().guiID}">
+            <div class="ssd_title">ShellShocked</div>
+            <div class="ssd_description">the most advanced hack for shell shockers.</div>
+            <hr class="ssd_divider" />
+            <div class="ssd_header">Cheats</div>
+            <div class="ssd_cheatRow">
+                <div class="ssd_cheatName">Aimbot</div>
+                <div class="ssd_key">key: ${settings.get().aimbot.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().aimbot.enabled}" onchange="setVal('aimbot');" id="${variables.get().aimbot}">
                     <span class="slider round"></span>
                 </label>
             </div>
-            <div class="ss_cheatRow">
-                <div class="ss_cheatName">Right Mouse Aimbot</div>
-                <div class="ss_key">key: ${settings.get().aimbot.rightMouse.key.toUpperCase()}</div>
+            <div class="ssd_cheatRow">
+                <div class="ssd_cheatName">Right Mouse Aimbot</div>
+                <div class="ssd_key">key: ${settings.get().aimbot.rightMouse.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().aimbot.rightMouse.enabled}" onchange="setVal('rightmouse');" id="${variables.get().rightmouse}">
                     <span class="slider round"></span>
                 </label>
             </div>
-            <div class="ss_cheatRow">
-                <div class="ss_cheatName">ESP</div>
-                <div class="ss_key">key: ${settings.get().esp.key.toUpperCase()}</div>
+            <div class="ssd_cheatRow">
+                <div class="ssd_cheatName">ESP</div>
+                <div class="ssd_key">key: ${settings.get().esp.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().esp.enabled}" onchange="setVal('esp');" id="${variables.get().esp}">
                     <span class="slider round"></span>
                 </label>
             </div>
-            <div class="ss_cheatRow">
-                <div class="ss_cheatName">ESP Boxes</div>
-                <div class="ss_key">key: ${settings.get().espBoxes.key.toUpperCase()}</div>
+            <div class="ssd_cheatRow">
+                <div class="ssd_cheatName">ESP Boxes</div>
+                <div class="ssd_key">key: ${settings.get().espBoxes.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().espBoxes.enabled}" onchange="setVal('espboxes');" id="${variables.get().espboxes}">
                     <span class="slider round"></span>
                 </label>
             </div>
-            <div class="ss_cheatRow">
-                <div class="ss_cheatName ss_brokenCheat" onclick="alert(\`ESP lines is broken. We're aware of the issue and working to fix it.\`);">ESP Lines</div>
-                <div class="ss_key">key: ${settings.get().espLines.key.toUpperCase()}</div>
+            <div class="ssd_cheatRow">
+                <div class="ssd_cheatName">ESP Lines</div>
+                <div class="ssd_key">key: ${settings.get().espLines.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().espLines.enabled}" onchange="setVal('esplines');" id="${variables.get().esplines}">
                     <span class="slider round"></span>
                 </label>
+            </div>
+            <hr class="ssd_divider" />
+            <div class="ssd_buttons">
+                <div class="ssd_button" onclick="document.documentElement.requestFullscreen();">Fullscreen</div>
+                <div class="ssd_button" onclick="location.reload();">Reload</div>
             </div>
         </div>
     `);

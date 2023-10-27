@@ -9,6 +9,7 @@ class Variables {
     espboxes = createString();
     onUpdate = createString();
     settingsID = createString();
+    lineOrigin = createString();
 
     constructor() {};
 

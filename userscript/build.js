@@ -6,7 +6,7 @@ import * as childproc from 'child_process';
 import * as url from 'url';
 
 const copyToClip = (data) => {
-    let proc =childproc.spawn('pbcopy'); 
+    let proc = childproc.spawn('pbcopy'); 
     proc.stdin.write(data);
     proc.stdin.end();
 };
