@@ -143,7 +143,7 @@ export async function initGUI() {
                 </label>
             </div>
             <div class="ssd_cheatRow">
-                <div class="ssd_cheatName">Right Mouse Aimbot</div>
+                <div class="ssd_cheatName">Right Mouse Only</div>
                 <div class="ssd_key">key: ${settings.get().aimbot.rightMouse.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().aimbot.rightMouse.enabled}" onchange="setVal('rightmouse');" id="${variables.get().rightmouse}">

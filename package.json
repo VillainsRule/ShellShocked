@@ -5,12 +5,10 @@
     "type": "module",
     "author": "@xthonk",
     "scripts": {
-        "build": "webpack && node userscript/build.js"
-    },
-    "dependencies": {
-        "webpack": "^5.89.0"
+        "build": "vite build && node userscript/build.js"
     },
     "devDependencies": {
-        "webpack-cli": "^5.1.4"
+        "terser": "^5.24.0",
+        "vite": "^4.5.0"
     }
 }
