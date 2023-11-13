@@ -2,10 +2,16 @@ import variables from '../utils/variables.js';
 import settings from '../utils/settings.js';
 
 let mouseDown = false;
-const handleMouse = (e) => (e.button === 2) ? (mouseDown = e.type === 'pointerdown' ? true : false) : ''
-window.addEventListener('pointerdown', handleMouse);
+let trackpadDown = false;
+
+const handleMouse = (e) => (e.button === 2) ? (mouseDown = e.type === 'pointerdown' ? true : false) : '';
+const handleTrackpad = (e) => (e.button === 2) ? (trackpadDown = !trackpadDown) : '';
+
+window.addEventListener('pointerdown', (e) => (handleMouse(e), handleTrackpad(e)));
 window.addEventListener('pointerup', handleMouse);
+
 export const rightMouseDown = () => mouseDown;
+export const trackpadLock = () => trackpadDown;
 
 export const initListeners = () => window.addEventListener('keyup', function(event) {
     if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
@@ -15,16 +21,6 @@ export const initListeners = () => window.addEventListener('keyup', function(eve
             if (document.getElementById(variables.get().guiID)) document.getElementById(variables.get().guiID).style.display === 'none' ?
                 document.getElementById(variables.get().guiID).style.display = '' :
                 document.getElementById(variables.get().guiID).style.display = 'none';
-            break;
-        case settings.get().aimbot.key:
-            if (!document.getElementById(variables.get().aimbot)) return;
-            settings.get().aimbot.enabled = !settings.get().aimbot.enabled;
-            document.getElementById(variables.get().aimbot).checked = settings.get().aimbot.enabled;
-            break;
-        case settings.get().aimbot.rightMouse.key:
-            if (!document.getElementById(variables.get().rightmouse)) return;
-            settings.get().aimbot.rightMouse.enabled = !settings.get().aimbot.rightMouse.enabled;
-            document.getElementById(variables.get().rightmouse).checked = settings.get().aimbot.rightMouse.enabled;
             break;
         case settings.get().esp.key:
             if (!document.getElementById(variables.get().esp)) return;

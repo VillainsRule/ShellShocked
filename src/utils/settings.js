@@ -6,8 +6,9 @@ class Settings {
     constructor() {
         if (localStorage.getItem('settings')) {
             try {
-                settings = JSON.parse(localStorage.getItem('settings'));
+                this.settings = JSON.parse(localStorage.getItem('settings'));
             } catch (e) {
+                console.error(e);
                 this.initial();
             };
         } else this.initial();
@@ -29,12 +30,7 @@ class Settings {
                 key: 'm'
             },
             aimbot: {
-                enabled: true,
-                key: 'b',
-                rightMouse: {
-                    enabled: true,
-                    key: 'l'
-                }
+                enabled: 'rightMouse'
             },
             menuKey: 'h'
         };

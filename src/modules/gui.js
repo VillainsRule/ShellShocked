@@ -2,24 +2,12 @@ import variables from '../utils/variables.js';
 import settings from '../utils/settings.js';
 
 export async function initGUI() {
-    window.setVal = (item) => {
-        let values = settings.get();
-
-        if (item === 'aimbot') values.aimbot.enabled = !values.aimbot.enabled;
-        else if (item === 'rightmouse') values.aimbot.rightMouse.enabled = !values.aimbot.rightMouse.enabled;
-        else if (item === 'esp') values.esp.enabled = !values.esp.enabled;
-        else if (item === 'esplines') values.espLines.enabled = !values.espLines.enabled;
-        else if (item === 'espboxes') values.espBoxes.enabled = !values.espBoxes.enabled;
-        
-        settings.set(values);
-    };
-
     let stylesheet = `
         .ssd_container {
             position: absolute;
             top: 15px;
             right: 15px;
-            width: 50vw;
+            width: 60vw;
             height: auto;
             border: var(--ss-border-blue5);
             background-color: var(--ss-blue3);
@@ -49,11 +37,14 @@ export async function initGUI() {
             font-family: 'Sigmar One';
         }
 
-        .ssd_cheatRow {
-            display: flex;
-            justify-content: center;
-            gap: 5vw;
+        .ssd_cheatGrid {
+            display: grid;
+            grid-gap: 3vw;
+            grid-template-columns: minmax(14vw, 3fr) minmax(2vw, 2fr) minmax(15vw, 4fr);
+            justify-items: center;
             margin-top: 1.5vh;
+            margin-left: 3vw;
+            margin-right: 3vw;
         }
 
         .ssd_cheatName {
@@ -75,6 +66,19 @@ export async function initGUI() {
             font-weight: 1000;
             font-size: 2.25vh;
             cursor: pointer;
+        }
+
+        .ssd_select {
+            border: calc(var(--ss-common-border-width)/2) solid var(--ss-blue5);
+            box-shadow: var(--ss-box-shadow-1), var(--ss-btn-dark-bevel) rgb(8,110,141), var(--ss-btn-light-bevel) rgb(0,173,230);
+            border-radius: var(--border-radius);
+            padding: 6px 20px;
+            font-weight: 1000;
+            font-size: 2vh;
+            cursor: pointer;
+            background: var(--ss-blue3);
+            color: white;
+            font-family: 'Nunito';
         }
 
         .switch {
@@ -134,44 +138,32 @@ export async function initGUI() {
             <div class="ssd_description">the most advanced hack for shell shockers.</div>
             <hr class="ssd_divider" />
             <div class="ssd_header">Cheats</div>
-            <div class="ssd_cheatRow">
+            <div class="ssd_cheatGrid">
                 <div class="ssd_cheatName">Aimbot</div>
                 <div class="ssd_key">key: ${settings.get().aimbot.key.toUpperCase()}</div>
-                <label class="switch">
-                    <input type="checkbox" checked="${settings.get().aimbot.enabled}" onchange="setVal('aimbot');" id="${variables.get().aimbot}">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="ssd_cheatRow">
-                <div class="ssd_cheatName">Right Mouse Only</div>
-                <div class="ssd_key">key: ${settings.get().aimbot.rightMouse.key.toUpperCase()}</div>
-                <label class="switch">
-                    <input type="checkbox" checked="${settings.get().aimbot.rightMouse.enabled}" onchange="setVal('rightmouse');" id="${variables.get().rightmouse}">
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="ssd_cheatRow">
+                <select class="ssd_select" id="${variables.get().aimbot}">
+                    <option value="rightMouse">Right Mouse Hold</option>
+                    <option value="trackpad">Trackpad</option>
+                    <option value="on">Always On</option>
+                    <option value="off">Off</option>
+                </select>
                 <div class="ssd_cheatName">ESP</div>
                 <div class="ssd_key">key: ${settings.get().esp.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().esp.enabled}" onchange="setVal('esp');" id="${variables.get().esp}">
-                    <span class="slider round"></span>
+                    <span class="slider"></span>
                 </label>
-            </div>
-            <div class="ssd_cheatRow">
                 <div class="ssd_cheatName">ESP Boxes</div>
                 <div class="ssd_key">key: ${settings.get().espBoxes.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().espBoxes.enabled}" onchange="setVal('espboxes');" id="${variables.get().espboxes}">
-                    <span class="slider round"></span>
+                    <span class="slider"></span>
                 </label>
-            </div>
-            <div class="ssd_cheatRow">
                 <div class="ssd_cheatName">ESP Lines</div>
                 <div class="ssd_key">key: ${settings.get().espLines.key.toUpperCase()}</div>
                 <label class="switch">
                     <input type="checkbox" checked="${settings.get().espLines.enabled}" onchange="setVal('esplines');" id="${variables.get().esplines}">
-                    <span class="slider round"></span>
+                    <span class="slider"></span>
                 </label>
             </div>
             <hr class="ssd_divider" />
@@ -181,4 +173,31 @@ export async function initGUI() {
             </div>
         </div>
     `);
+
+    document.getElementById(`${variables.get().aimbot}`).value = settings.get().aimbot.enabled;
+
+    document.getElementById(`${variables.get().aimbot}`).onchange = (ev) => {
+        let selected = ev.target.options[ev.target.selectedIndex].value;
+        let values = settings.get();
+        values.aimbot.enabled = selected;
+        settings.set(values);
+    };
+
+    document.getElementById(`${variables.get().esp}`).onchange = () => {
+        let values = settings.get();
+        values.esp.enabled = !values.esp.enabled;
+        settings.set(values);
+    };
+
+    document.getElementById(`${variables.get().esplines}`).onchange = () => {
+        let values = settings.get();
+        values.espLines.enabled = !values.espLines.enabled;
+        settings.set(values);
+    };
+
+    document.getElementById(`${variables.get().espboxes}`).onchange = () => {
+        let values = settings.get();
+        values.espBoxes.enabled = !values.espBoxes.enabled;
+        settings.set(values);
+    }
 };

@@ -8,9 +8,14 @@
 <h2 align="center">Features</h2>
 
 - Advanced GUI
-    - A clean GUI that's easy to use.<br><img width="600" src="https://github.com/VillainsRule/ShellShocked/assets/101288516/94dfc5e0-8b7f-4e2d-a7a9-8607ed131b08">
+    - A clean GUI that's easy to use.
+    - Click the 'h' key to close it.<br><img height="400" src="https://i.imgur.com/iOkzSRt.png">
 - Aimbot<br><img width="600" src="https://github.com/VillainsRule/ShellShocked/assets/101288516/d67342c8-1145-4a29-9445-253b51a95c48"><br><img width="600" src="https://github.com/VillainsRule/ShellShocked/assets/101288516/e7326357-2292-4c6d-be03-42addb472172">
-    - Right Mouse/Always toggle
+    - We use an advanced 'modes' selector where you can choose between 4 different modes:
+        - Right Mouse Only: lock on players when the right mouse is held down.
+        - Trackpad: a new concept thought of by me for the trackpad users. right click once to start locking. right click again to stop. repeat.
+        - Always On: always lock, no way to disable during a round.
+        - Off: never on, no way to enable during a round.
 - ESP
     - ESP: Egg skins & guns through walls<br><img width="600" src="https://github.com/VillainsRule/ShellShocked/assets/101288516/4c1df94a-3cfe-4ab7-aeeb-7767dc46b7a0">
     - ESP boxes: boxes around eggs<br><img width="600" src="https://github.com/VillainsRule/ShellShocked/assets/101288516/fed11acb-ae4d-4364-8263-c7000b9ef548">

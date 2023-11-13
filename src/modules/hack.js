@@ -1,5 +1,5 @@
 import variables from '../utils/variables.js';
-import { rightMouseDown } from './listeners.js';
+import { rightMouseDown, trackpadLock } from './listeners.js';
 import settings from '../utils/settings.js';
 
 export async function initHack() {
@@ -75,7 +75,12 @@ export async function initHack() {
             };
         };
     
-        if (settings.get().aimbot.enabled && (settings.get().aimbot.rightMouse.enabled ? rightMouseDown() : true) && myPlayer.playing) {
+        if (
+            ((settings.get().aimbot.enabled === 'on') ||
+            (settings.get().aimbot.enabled === 'rightMouse' && rightMouseDown()) ||
+            (settings.get().aimbot.enabled === 'trackpad' && trackpadLock()))
+            && myPlayer.playing
+        ) {
             let minDistance = Infinity;
             let targetPlayer;
     
