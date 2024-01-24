@@ -19,7 +19,7 @@ export async function initHook() {
 
                 try {
                     babylonVarName = /this\.origin=new ([a-zA-Z]+)\.Vector3/.exec(code)[1];
-                    playersVarName = /([^,]+)=\[\],[^,]+=\[\],{}/.exec(code)[1];
+                    playersVarName = /=([a-zA-Z]+)\[this\.playerIdx\];/.exec(code)[1];
                     myPlayerVarName = /"fire":document.pointerLockElement&&([^&]+)&&/.exec(code)[1];
                     sceneVarName = /createMapCells\(([^,]+),/.exec(code)[1];
                     cullFuncName = /=([a-zA-Z_$]+)\(this\.mesh,\.[0-9]+\)/.exec(code)[1];

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ShellShocked
 // @description  the most advanced hack for shell shockers.
-// @version      1.1.0a
+// @version      1.1.1a
 // @icon         https://i.imgur.com/t57csO9.png
 
 // @author       VillainsRule
