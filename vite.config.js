@@ -1,12 +1,24 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            'config': '/config.js',
+            'modules': '/src/modules',
+            'utils': '/src/utils'
+        }
+    },
     build: {
         target: 'es2020',
         outDir: './dist',
         assetsDir: './',
+        emptyOutDir: false,
         rollupOptions: {
-            input: './src/main.js'
+            input: './src/main.js',
+            output: {
+                entryFileNames: 'shellshocked.min.js',
+                compact: true
+            }
         },
         minify: 'terser',
         terserOptions: {

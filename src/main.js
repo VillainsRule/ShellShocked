@@ -1,15 +1,17 @@
-import settings from './utils/settings.js';
-settings.sync();
+import extras from 'modules/extras.js';
+extras();
 
-import { initHook } from './modules/hooker.js';
-import { initListeners } from './modules/listeners.js';
-import { initHack } from './modules/hack.js';
-import { initGUI } from './modules/gui.js';
+import cheatManager from 'modules/cheats.js';
+cheatManager.addCheats();
 
-initHook();
-initListeners();
-initHack();
+import listenerManager from 'modules/listeners.js';
+listenerManager.createListeners();
 
-window.addEventListener('DOMContentLoaded', () => initGUI());
+import patcher from 'modules/patcher.js';
+patcher.interceptRequest();
 
-export default true;
+import render from 'modules/render.js';
+render();
+
+import createGUI from 'modules/gui.js';
+unsafeWindow.addEventListener('DOMContentLoaded', () => createGUI());

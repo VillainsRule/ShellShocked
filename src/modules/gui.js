@@ -1,55 +1,58 @@
-import variables from '../utils/variables.js';
-import settings from '../utils/settings.js';
+import cheatManager from 'modules/cheats.js';
 
-export async function initGUI() {
+import variables from 'utils/variables.js';
+import logger from 'utils/logger';
+
+export default () => {
+    // styles
     let stylesheet = `
         .ssd_container {
             position: absolute;
             top: 15px;
             right: 15px;
-            width: 60vw;
+            width: 350px;
             height: auto;
-            border: var(--ss-border-blue5);
-            background-color: var(--ss-blue3);
+            border: 3px solid #1f1f1f;
+            background-color: #2f2f2ff2;
             z-index: 99999;
-            padding: 2vh;
+            padding: 10px;
             text-align: center;
-            border-radius: var(--ss-space-sm);
-            color: var(--ss-white);
+            border-radius: 10px;
+            color: #ffffff;
         }
 
         .ssd_title {
             font-family: 'Sigmar One';
-            font-size: 4vh;
-        }
-
-        .ssd_description {
-            font-size: 2.6vh;
+            font-size: 23px;
         }
 
         .ssd_divider {
             width: calc(90%);
-            margin: 2vh 5%;
-        }
-
-        .ssd_header {
-            font-size: 2.9vh;
-            font-family: 'Sigmar One';
+            margin: 10px 5%;
         }
 
         .ssd_cheatGrid {
             display: grid;
-            grid-gap: 3vw;
-            grid-template-columns: minmax(14vw, 3fr) minmax(2vw, 2fr) minmax(15vw, 4fr);
+            grid-gap: 3vh 1vw;
+            grid-template-columns: minmax(100px, 2fr) minmax(150px, 2fr);
             justify-items: center;
-            margin-top: 1.5vh;
-            margin-left: 3vw;
-            margin-right: 3vw;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .ssd_category {
+            font-size: 2.5vh;
+            font-weight: 1000;
+            margin: 5px;
+            cursor: pointer;
         }
 
         .ssd_cheatName {
-            font-size: 2.5vh;
-            font-family: 'Sigmar One';
+            display: flex;
+            align-items: center;
+            font-size: 2.2vh;
+            font-family: 'Nunito';
+            font-weight: 1000;
         }
 
         .ssd_buttons {
@@ -59,9 +62,9 @@ export async function initGUI() {
         }
 
         .ssd_button {
-            border: calc(var(--ss-common-border-width)/2) solid var(--ss-blue5);
-            box-shadow: var(--ss-box-shadow-1), var(--ss-btn-dark-bevel) rgb(8,110,141), var(--ss-btn-light-bevel) rgb(0,173,230);
-            border-radius: var(--border-radius);
+            border: 1.5px solid #1f1f1f;
+            box-shadow: 5px 5px 10px #1f1f1f;
+            border-radius: 5px;
             padding: 6px 20px;
             font-weight: 1000;
             font-size: 2.25vh;
@@ -69,135 +72,83 @@ export async function initGUI() {
         }
 
         .ssd_select {
-            border: calc(var(--ss-common-border-width)/2) solid var(--ss-blue5);
-            box-shadow: var(--ss-box-shadow-1), var(--ss-btn-dark-bevel) rgb(8,110,141), var(--ss-btn-light-bevel) rgb(0,173,230);
-            border-radius: var(--border-radius);
-            padding: 6px 20px;
+            border: 1.5px solid #1f1f1f;
+            border-radius: 5px;
+            padding: 4px 15px;
             font-weight: 1000;
             font-size: 2vh;
             cursor: pointer;
-            background: var(--ss-blue3);
+            background: #1f1f1fcf;
             color: white;
             font-family: 'Nunito';
+            outline: none;
         }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: calc(4vh + 8px);
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
+        .ssd_check {
+            width: 40px; 
+            height: 20px;
+            border: 1.5px solid #1f1f1f;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 4vh;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #5bc75f;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px #5bc75f;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(26px);
         }
     `;
-
+    
+    // adds GUI to body
     document.body.insertAdjacentHTML('beforeend', `
         <style>${stylesheet}</style>
-        <div class="ssd_container" id="${variables.get().guiID}">
+        <div class="ssd_container">
             <div class="ssd_title">ShellShocked</div>
-            <div class="ssd_description">the most advanced hack for shell shockers.</div>
             <hr class="ssd_divider" />
-            <div class="ssd_header">Cheats</div>
-            <div class="ssd_cheatGrid">
-                <div class="ssd_cheatName">Aimbot</div>
-                <div class="ssd_key">key: ${settings.get().aimbot.key.toUpperCase()}</div>
-                <select class="ssd_select" id="${variables.get().aimbot}">
-                    <option value="rightMouse">Right Mouse Hold</option>
-                    <option value="trackpad">Trackpad</option>
-                    <option value="on">Always On</option>
-                    <option value="off">Off</option>
-                </select>
-                <div class="ssd_cheatName">ESP</div>
-                <div class="ssd_key">key: ${settings.get().esp.key.toUpperCase()}</div>
-                <label class="switch">
-                    <input type="checkbox" checked="${settings.get().esp.enabled}" onchange="setVal('esp');" id="${variables.get().esp}">
-                    <span class="slider"></span>
-                </label>
-                <div class="ssd_cheatName">ESP Boxes</div>
-                <div class="ssd_key">key: ${settings.get().espBoxes.key.toUpperCase()}</div>
-                <label class="switch">
-                    <input type="checkbox" checked="${settings.get().espBoxes.enabled}" onchange="setVal('espboxes');" id="${variables.get().espboxes}">
-                    <span class="slider"></span>
-                </label>
-                <div class="ssd_cheatName">ESP Lines</div>
-                <div class="ssd_key">key: ${settings.get().espLines.key.toUpperCase()}</div>
-                <label class="switch">
-                    <input type="checkbox" checked="${settings.get().espLines.enabled}" onchange="setVal('esplines');" id="${variables.get().esplines}">
-                    <span class="slider"></span>
-                </label>
-            </div>
+            <div class="ssd_categoryList">${
+                Object.entries(cheatManager.cheats).map(([ categoryName, cheatList ]) => { // loop through all cheat categories
+                    return `
+                        <div class="ssd_category" id="ssd_${categoryName}">${categoryName}</div>
+                        <div class="ssd_cheatGrid" id="ssd_list_${categoryName}" style="display: none;">${
+                            cheatList.map((cheat) => { // determine cheat type and add it
+                                return `
+                                    <div class="ssd_cheatName">${cheat.name}</div>
+                                    ${cheat.type === 'check' ? `
+                                        <input type="checkbox" ${(cheatManager.enabled(cheat.name)) ? 'checked' : ''} id="ssd_cheatCheck_${cheat.id}" class="ssd_check" />
+                                    ` : cheat.type === 'menu' ? `
+                                        <select class="ssd_select" id="ssd_select_${cheat.id}">
+                                            ${cheatManager.options(cheat.name).map((option) => {
+                                                return `<option ${cheatManager.enabled(cheat.name) === option ? 'selected' : ''} value="${option.replaceAll(' ', '_')}">${option}</option>`
+                                            }).join('')}
+                                        </select>
+                                    ` : cheat.type === 'button' ? `
+                                        <div class="ssd_button" id="ssd_button_${cheat.id}">${cheat.label}</div>
+                                    ` : ''}
+                                `;
+                            }).join('')
+                        }</div>
+                    `
+                }).join('')
+            }</div>
             <hr class="ssd_divider" />
             <div class="ssd_buttons">
-                <div class="ssd_button" onclick="document.documentElement.requestFullscreen();">Fullscreen</div>
-                <div class="ssd_button" onclick="location.reload();">Reload</div>
+                <div class="ssd_button" onclick="window['${variables.cheatManager}'].reset();">Reset Cheats</div>
             </div>
         </div>
     `);
 
-    document.getElementById(`${variables.get().aimbot}`).value = settings.get().aimbot.enabled;
+    logger.log(`GUI created & appended to body.`);
 
-    document.getElementById(`${variables.get().aimbot}`).onchange = (ev) => {
-        let selected = ev.target.options[ev.target.selectedIndex].value;
-        let values = settings.get();
-        values.aimbot.enabled = selected;
-        settings.set(values);
-    };
+    Object.entries(cheatManager.cheats).map(([ categoryName, cheatList ]) => { // loop through all cheat categories
+        let categoryCheats = document.querySelector(`#ssd_list_${categoryName}`); // get a list of cheat elements
 
-    document.getElementById(`${variables.get().esp}`).onchange = () => {
-        let values = settings.get();
-        values.esp.enabled = !values.esp.enabled;
-        settings.set(values);
-    };
+        document.querySelector(`#ssd_${categoryName}`).onclick = () => categoryCheats.style.display === '' ? // handle opening/closing of category
+            categoryCheats.style.display = 'none' :
+            categoryCheats.style.display = '';
 
-    document.getElementById(`${variables.get().esplines}`).onchange = () => {
-        let values = settings.get();
-        values.espLines.enabled = !values.espLines.enabled;
-        settings.set(values);
-    };
+        cheatList.forEach((cheat) => { // activate cheats in various ways based on type
+            if (cheat.type === 'check')
+                document.getElementById(`ssd_cheatCheck_${cheat.id}`).onchange = () => cheatManager.tick(cheat.name);
+            else if (cheat.type === 'menu')
+                document.getElementById(`ssd_select_${cheat.id}`).onchange = () =>
+                    cheatManager.select(cheat.name, document.querySelector(`#ssd_select_${cheat.id}`).value.replaceAll('_', ' '));
+            else if (cheat.type === 'button')
+                document.getElementById(`ssd_button_${cheat.id}`).onclick = () => cheatManager.activate(cheat.name);
+        })
+    });
 
-    document.getElementById(`${variables.get().espboxes}`).onchange = () => {
-        let values = settings.get();
-        values.espBoxes.enabled = !values.espBoxes.enabled;
-        settings.set(values);
-    }
+    logger.log(`GUI listeners activated.`);
 };

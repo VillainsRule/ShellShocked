@@ -1,16 +1,15 @@
 {
     "name": "shellshocked",
-    "description": "the most advanced hack for shell shockers.",
+    "description": "the most modern hack for shell shockers. built with nodejs & vite.",
     "main": "src/main.js",
     "type": "module",
-    "author": "@xthonk",
 
     "scripts": {
         "build": "vite build && node userscript/build.js"
     },
 
     "devDependencies": {
-        "terser": "^5.24.0",
-        "vite": "^4.5.0"
+        "terser": "^5.28.1",
+        "vite": "^5.1.4"
     }
 }

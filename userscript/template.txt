@@ -1,20 +1,20 @@
 // ==UserScript==
 // @name         ShellShocked
 // @description  the most advanced hack for shell shockers.
-// @version      1.1.1a
-// @icon         https://i.imgur.com/t57csO9.png
+// @version      {{version}}
+// @icon         https://i.imgur.com/DtD4iJo.png
 
 // @author       VillainsRule
 // @namespace    https://github.com/VillainsRule/ShellShocked
 
-// @match        *://*.shellshock.io/*
-// @match        *://*.math.international/*
+// @match        *://*.shellshock.io/
+// @match        *://*.math.international/
+// @run-at       document-start
 
-// @grant none
-// @run-at document-start
-
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_deleteValue
+// @grant        unsafeWindow
 // ==/UserScript==
 
-(() => {
-    {{code}}
-})();
+(() => {{{code}}})();

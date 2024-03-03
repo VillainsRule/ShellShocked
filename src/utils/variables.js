@@ -1,22 +1,26 @@
-const createString = () => btoa(Math.random().toString(32));
+import config from 'config';
 
 class Variables {
-    guiID = createString();
-    aimbot = createString();
-    rightmouse = createString();
-    esp = createString();
-    esplines = createString();
-    espboxes = createString();
-    onUpdate = createString();
-    settingsID = createString();
-    lineOrigin = createString();
+    createString = () => Math.random().toString(36).slice(2);
 
-    constructor() {};
+    constructor() {
+        this.render = this.createString();
+        this.send = this.createString();
 
-    get() {
-        return this;
-    }
+        this.leaderboardUpdate = this.createString();
+
+        this.onStart = this.createString();
+        this.onKill = this.createString();
+        this.onSignOut = this.createString();
+
+        this.cheatManager = this.createString();
+        this.patcher = this.createString();
+
+        this.lineOrigin = this.createString();
+        this.lineArray = this.createString();
+    };
 };
 
 const variables = new Variables();
+if (config.exposeVariables) unsafeWindow.v = variables;
 export default variables;
