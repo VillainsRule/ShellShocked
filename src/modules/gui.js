@@ -1,13 +1,10 @@
 import cheatManager from 'modules/cheats.js';
-
 import variables from 'utils/variables.js';
-import logger from 'utils/logger';
 
 export default () => {
-    // styles
     let stylesheet = `
         .ssd_container {
-            position: absolute;
+            position: fixed;
             top: 15px;
             right: 15px;
             width: 350px;
@@ -19,6 +16,7 @@ export default () => {
             text-align: center;
             border-radius: 10px;
             color: #ffffff;
+            font-family: 'Nunito';
         }
 
         .ssd_title {
@@ -26,9 +24,14 @@ export default () => {
             font-size: 23px;
         }
 
+        .ssd_info {
+            font-weight: bold;
+            font-size: 15px;
+        }    
+
         .ssd_divider {
             width: calc(90%);
-            margin: 10px 5%;
+            margin: 15px 5%;
         }
 
         .ssd_cheatGrid {
@@ -51,7 +54,6 @@ export default () => {
             display: flex;
             align-items: center;
             font-size: 2.2vh;
-            font-family: 'Nunito';
             font-weight: 1000;
         }
 
@@ -92,18 +94,18 @@ export default () => {
         }
     `;
     
-    // adds GUI to body
     document.body.insertAdjacentHTML('beforeend', `
         <style>${stylesheet}</style>
         <div class="ssd_container">
             <div class="ssd_title">ShellShocked</div>
+            <div class="ssd_info">press h to open/close this.</div>
             <hr class="ssd_divider" />
             <div class="ssd_categoryList">${
-                Object.entries(cheatManager.cheats).map(([ categoryName, cheatList ]) => { // loop through all cheat categories
+                Object.entries(cheatManager.cheats).map(([ categoryName, cheatList ]) => {
                     return `
                         <div class="ssd_category" id="ssd_${categoryName}">${categoryName}</div>
                         <div class="ssd_cheatGrid" id="ssd_list_${categoryName}" style="display: none;">${
-                            cheatList.map((cheat) => { // determine cheat type and add it
+                            cheatList.map((cheat) => {
                                 return `
                                     <div class="ssd_cheatName">${cheat.name}</div>
                                     ${cheat.type === 'check' ? `
@@ -130,16 +132,14 @@ export default () => {
         </div>
     `);
 
-    logger.log(`GUI created & appended to body.`);
+    Object.entries(cheatManager.cheats).map(([ categoryName, cheatList ]) => {
+        let categoryCheats = document.querySelector(`#ssd_list_${categoryName}`);
 
-    Object.entries(cheatManager.cheats).map(([ categoryName, cheatList ]) => { // loop through all cheat categories
-        let categoryCheats = document.querySelector(`#ssd_list_${categoryName}`); // get a list of cheat elements
-
-        document.querySelector(`#ssd_${categoryName}`).onclick = () => categoryCheats.style.display === '' ? // handle opening/closing of category
+        document.querySelector(`#ssd_${categoryName}`).onclick = () => categoryCheats.style.display === '' ?
             categoryCheats.style.display = 'none' :
             categoryCheats.style.display = '';
 
-        cheatList.forEach((cheat) => { // activate cheats in various ways based on type
+        cheatList.forEach((cheat) => {
             if (cheat.type === 'check')
                 document.getElementById(`ssd_cheatCheck_${cheat.id}`).onchange = () => cheatManager.tick(cheat.name);
             else if (cheat.type === 'menu')
@@ -149,6 +149,4 @@ export default () => {
                 document.getElementById(`ssd_button_${cheat.id}`).onclick = () => cheatManager.activate(cheat.name);
         })
     });
-
-    logger.log(`GUI listeners activated.`);
 };

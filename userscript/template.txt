@@ -17,4 +17,7 @@
 // @grant        unsafeWindow
 // ==/UserScript==
 
+// {{CRACKEDSHELL}}
+// {{!CRACKEDSHELL}}
+
 (() => {{{code}}})();

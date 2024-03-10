@@ -6,22 +6,16 @@ import variables from 'utils/variables.js';
 class Patcher {
     keys = {};
 
-    constructor() {
-        logger.log('Started Patcher.');
-    };
+    constructor () {};
 
-    // create a key value
     create = (key, value) => {
         if (value) this.keys[key] = value[1];
         else logger.error(`Key ${key} could not be found.`);
     };
 
-    // intercept the shellshock.js request
     interceptRequest = () => {
-        // Save an original copy of XMLHTTPRequest
         let request = XMLHttpRequest;
 
-        // Modifies XMLHTTPRequest to intercept shellshock.js
         unsafeWindow.XMLHttpRequest = class extends request {
             url;
 
@@ -32,7 +26,6 @@ class Patcher {
 
             get response() {
                 if (this.url.includes('shellshock.js')) {
-                    logger.log('Found shellshock.js, patching...');
                     return unsafeWindow[variables.patcher].patch(super.response);
                 } else return super.response;
             };
@@ -43,7 +36,6 @@ class Patcher {
         let code = response;
 
         try {
-            // Capture values for obfuscation/other cheats with obfuscated/compiled variables
             this.create('babylon', /playerCollisionMesh=(.*?)\./.exec(code));
             this.create('playerList', /\]\.score-(.*?)\[/.exec(code));
             this.create('myPlayer', /"fire":document.pointerLockElement&&([^&]+)&&/.exec(code));
@@ -66,7 +58,7 @@ class Patcher {
             this.create('adHandler', /\.ready\?\((.*?)\./.exec(code));
             this.create('eggGame', /you!"\),(.*?)\(/.exec(code));
         } catch (error) {
-            logger.error(`Variable finding error`);
+            logger.error(`Could not find variables. Error:`);
             console.error(error);
             return code;
         };
@@ -100,11 +92,10 @@ class Patcher {
             [/Remaining"\)\)\{/, `Remaining")){if (confirm('You are currently banned from Shell Shockers. Click OK to sign out and remove this ban')) {extern.signOut();}; return;`]
         ];
 
-        // Replace each patch with the intended value
         patches.forEach(p => {
             let oc = code;
             code = code.replace(p[0], p[1]);
-            if (code === oc) logger.error(`Patch ${p[0]} had no effect.`); // debugging help :)
+            if (code === oc) logger.error(`Patch ${p[0]} had no effect.`);
         });
 
         logger.log(`Successfully patched shellshock.js.`);

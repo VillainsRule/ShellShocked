@@ -3,17 +3,13 @@ import listenerManager from 'modules/listeners.js';
 import patcher from 'modules/patcher.js';
 
 import variables from 'utils/variables.js';
-import logger from 'utils/logger';
 
-// This code is added to the game system to change how the game is rendered (allows for ESP drawings & similar changes)
 export default () => unsafeWindow[variables.render] = function (babylon, players, myPlayer) {
     if (!myPlayer) return;
 
     unsafeWindow[variables.leaderboardUpdate]();
 
-    // Creates the origin point for all lines and exposes it to the window
     if (!unsafeWindow[variables.lineOrigin]) {
-        logger.log(`Creating a new LineOrigin`);
         unsafeWindow[variables.lineOrigin] = new babylon[patcher.keys.Vector3]();
         unsafeWindow[variables.lineArray] = [];
     };
@@ -26,7 +22,6 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
     if (document.querySelector('#coords'))
         document.querySelector('#coords').innerHTML = `${lineOrigin.x.toFixed(1)}, ${lineOrigin.y.toFixed(1)}, ${lineOrigin.z.toFixed(1)}`;
 
-    // Adjusts the line origin based on player yaw
     const yaw = myPlayer[patcher.keys.actor][patcher.keys.mesh].rotation.y;
 
     lineOrigin.x += Math.sin(yaw);
@@ -35,15 +30,12 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
 
     for (let i = 0; i < lineArray.length; i++) lineArray[i].playerExists = false;
 
-    // Loop through each player
     for (let i = 0; i < players.length; i++) {
         const player = players[i];
-        if (!player || player === myPlayer) continue; // Ignore the local player
+        if (!player || player === myPlayer) continue;
 
-        if (player.sphere === undefined) { // Give newly spawned players ESP boxes
-            logger.log(`Creating a sphere for ${player.name || player.normalName || player.safeName || 'a player'}`);
-
-            const material = new babylon.StandardMaterial('myMaterial', player[patcher.keys.actor].scene); // Create the ESP box & adjust it
+        if (player.sphere === undefined) {
+            const material = new babylon.StandardMaterial('myMaterial', player[patcher.keys.actor].scene);
             material.emissiveColor = material.diffuseColor = new babylon.Color3(1, 0, 0);
             material.wireframe = true;
 
@@ -57,18 +49,15 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
             sphere.parent = player[patcher.keys.actor][patcher.keys.mesh];
             sphere.renderingGroupId = 1;
 
-            player.sphere = sphere; // Link the box to the player
+            player.sphere = sphere;
         };
 
-        if (player.lines === undefined) { // Give newly spawned players ESP lines
-            logger.log(`Creating a line for ${player.name || player.normalName || player.safeName || 'a player'}`);
-
+        if (player.lines === undefined) {
             const options = {
                 points: [lineOrigin, player[patcher.keys.actor][patcher.keys.mesh].position],
                 updatable: true
             };
 
-            // Create the lines & style them
             const lines = options.instance = babylon[patcher.keys.MeshBuilder][patcher.keys.CreateLines]('lines', options, player[patcher.keys.actor].scene);
             lines.color = new babylon.Color3(1, 0, 0);
             lines.alwaysSelectAsActiveMesh = true;
@@ -77,18 +66,16 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
             player.lines = lines;
             player.lineOptions = options;
 
-            lineArray.push(lines); // Add the lines to the list
+            lineArray.push(lines);
         };
 
         player.lines.playerExists = true;
         player.lines = babylon[patcher.keys.MeshBuilder][patcher.keys.CreateLines]('lines', player.lineOptions);
 
-        // Handle rendering of the ESP lines/boxes
         let isEnemy = myPlayer.team === 0 || myPlayer.team !== player.team;
         player.sphere.visibility = cheatManager.enabled('ESP Boxes') && isEnemy;
         player.lines.visibility = player[patcher.keys.playing] && cheatManager.enabled('ESP Lines') && isEnemy;
 
-        // egg esp!
         player[patcher.keys.actor][patcher.keys.bodyMesh].renderingGroupId = cheatManager.enabled('Skin ESP') ? 1 : 0;
 
         if (cheatManager.enabled('Nametags') && player[patcher.keys.actor] && player[patcher.keys.actor].nameSprite) {
@@ -108,14 +95,13 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
     };
 
     for (let i = 0; i < lineArray.length; i++) {
-        if (!lineArray[i].playerExists) { // Remove lines of dead players
-            logger.log(`Removing a line (due to a death)`);
+        if (!lineArray[i].playerExists) {
             lineArray[i].dispose();
             lineArray.splice(i, 1);
         };
     };
 
-    if ( // Handle aimbot
+    if (
         ((cheatManager.enabled('Snap Mode') === 'Always On') ||
             (cheatManager.enabled('Snap Mode') === 'Right Mouse') && listenerManager.mouseDown() ||
             (cheatManager.enabled('Snap Mode') === 'Trackpad') && listenerManager.trackpadActive())
@@ -124,10 +110,9 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
         let minDistance = Infinity;
         let targetPlayer;
 
-        for (let i = 0; i < players.length; i++) { // Find the closest player
+        for (let i = 0; i < players.length; i++) {
             const player = players[i];
 
-            // Make sure the player is valid (right team, not dead, etc)
             if (player && player !== myPlayer && player[patcher.keys.playing] && (myPlayer.team === 0 || player.team !== myPlayer.team)) {
                 const x = player[patcher.keys.actor][patcher.keys.mesh].position.x - myPlayer[patcher.keys.actor][patcher.keys.mesh].position.x;
                 const y = player[patcher.keys.actor][patcher.keys.mesh].position.y - myPlayer[patcher.keys.actor][patcher.keys.mesh].position.y;
@@ -141,20 +126,15 @@ export default () => unsafeWindow[variables.render] = function (babylon, players
             };
         };
 
-        logger.log(`Aimbot is targeting ${targetPlayer?.name || targetPlayer?.normalName || targetPlayer?.safeName || 'a player'}`);
-
         if (targetPlayer) {
-            // Find the player's location
             const x = targetPlayer[patcher.keys.actor][patcher.keys.mesh].position.x - myPlayer[patcher.keys.actor][patcher.keys.mesh].position.x;
             const y = targetPlayer[patcher.keys.actor][patcher.keys.mesh].position.y - myPlayer[patcher.keys.actor][patcher.keys.mesh].position.y;
             const z = targetPlayer[patcher.keys.actor][patcher.keys.mesh].position.z - myPlayer[patcher.keys.actor][patcher.keys.mesh].position.z;
 
-            // Adjust the camera to them
             myPlayer[patcher.keys.yaw] = Math.radAdd(Math.atan2(x, z), 0);
             myPlayer[patcher.keys.pitch] = -Math.atan2(y, Math.hypot(x, z)) % 1.5;
         };
     };
 
-    // Auto Reload: check if the ammo is empty
     if (myPlayer.weapon.ammo.rounds < 1 && cheatManager.enabled('Auto Reload')) myPlayer.reload();
 };

@@ -1,14 +1,7 @@
-import config from 'config';
-
 import cheats from 'modules/cheats.js';
-
-import logger from 'utils/logger.js';
 import variables from 'utils/variables.js';
 
-// these are some extra cheats not bundled into other files
 export default () => {
-    logger.log(`Running extras...`);
-
     const inform = (title, body) => document.body.insertAdjacentHTML('beforeend', `
         <div class="popup_window popup_sm roundme_md centered" id="genericPopup" style="">
             <div>
@@ -24,45 +17,42 @@ export default () => {
         </div>
     `);
 
-    if (config.exposeVariables) window.i = inform;
-
     unsafeWindow[variables.send] = (msg) => {
-        if (cheats.enabled('Bypass Filter')) msg = (['\u202e',].concat(msg.split('').reverse())).join('');
+        if (cheats.enabled('Bypass Filter')) {
+            let override = '\u202e';
+            msg = ([override,].concat(msg.split('').reverse())).join('');
+        };
+
         return msg;
     };
 
-    // controls visibility of the coordinate HTML added below
-    cheats.listen('Coordinates', (isActive) => 
+    cheats.listen('Coordinates', (isActive) =>
         [...document.querySelectorAll('.coordinfo')]
             .forEach(e => e.style.display = isActive ? '' : 'none'));
 
-    unsafeWindow[variables.onStart] = () => { // a custom start function
-        logger.log(`The game has fully booted!`);
-
-        // adds a new element for the coordinate cheat
+    unsafeWindow[variables.onStart] = () => {
         document.querySelector('#readouts').insertAdjacentHTML('beforeend', `
             <h5 class="coordinfo nospace title" style="display: ${cheats.enabled('Coordinates') ? '' : 'none'};">coords</h5>
             <p id="coords" class="coordinfo name" style="display: ${cheats.enabled('Coordinates') ? '' : 'none'};"></p>
         `);
     };
 
-    unsafeWindow[variables.onSignOut] = () => { // capture signout
-        Object.keys(localStorage).forEach(s => localStorage.removeItem(s)); // remove local data
-        document.cookie = ''; // removes cookies
-        inform(`You've been unbanned!`, `In 15 seconds, the page will reload to confirm your new account being created in the server.`); // info
-        setTimeout(() => location.reload(true), 15000); // after 15s, hard reload the page to save changes
+    unsafeWindow[variables.onSignOut] = () => {
+        Object.keys(localStorage).forEach(s => localStorage.removeItem(s));
+        document.cookie = '';
+        inform(`You've been unbanned!`, `In 15 seconds, the page will reload to confirm your new account being created in the server.`);
+        setTimeout(() => location.reload(true), 15000);
     };
 
-    unsafeWindow.WebSocket.prototype._send = WebSocket.prototype.send; // create a local copy of websocket send to avoid infinite loop
-    unsafeWindow.WebSocket.prototype.send = function (data) { // modifies the original send
-        if (data instanceof String) return this._send(data); // basic checks to avoid packets
+    unsafeWindow.WebSocket.prototype._send = WebSocket.prototype.send;
+    unsafeWindow.WebSocket.prototype.send = function (data) {
+        if (data instanceof String) return this._send(data);
         if (data.byteLength == 0) return this._send(data);
 
-        let arr = new Uint8Array(data); // split up data
+        let arr = new Uint8Array(data);
 
-        if (arr[0] === 27 && cheats.enabled('Grenade Max')) { // 27 = grenade throw
-            arr[1] = 255; // upgrade grenade level to max
-            logger.log(`Upgraded grenade to full power.`);
+        if (arr[0] === 27 && cheats.enabled('Grenade Max')) {
+            arr[1] = 255;
             return this._send(arr.buffer);
         };
 
@@ -73,18 +63,15 @@ export default () => {
         if (enabled) {
             document.head.insertAdjacentHTML('beforeend', `<style id="ssd_lh">
                 .playerSlot--name-score {
-                    width: 15vw;
+                    width: 16vw;
                 }
             </style>`);
         } else document.querySelector('#ssd_lh')?.remove();
     });
 
-    cheats.listen('Unban', async () => { // on listener call for 'Unban' button
+    cheats.listen('Unban', async () => {
         if (confirm('Are you sure you want to unban yourself? This will also clear your skins, eggs, and log you out of your account.')) {
-            // ^^ warning
-            unsafeWindow.extern.signOut(); // shell shockers function to sign out
+            unsafeWindow.extern.signOut();
         };
     });
-
-    logger.log(`Extra execution complete!`);
 };
