@@ -6,6 +6,12 @@
 </div>
 
 <br>
+<br>
+<h3 align='center'>massive thanks to <a href='https://github.com/Hydroflame522/StateFarmClient'>statefarm client</a> for some code & great community.</h3>
+<h4 align='center'>(really great people tbh, especially doescolder & onlypuppy)</h4>
+<br>
+<br>
+
 <h2 align="center">Features</h2>
 
 - Advanced GUI
